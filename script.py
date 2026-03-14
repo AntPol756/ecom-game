@@ -4,7 +4,9 @@ if __name__ == '__main__':
     board = ["-", "-", "-",
              "-", "-", "-",
              "-", "-", "-"]
-    current_player = "X"
+
+
+    turn = 0
     winner = " "
     game_running = True
 
@@ -17,13 +19,19 @@ def print_board(board):
     print(board[6] + " | " + board[7] + " | " + board[8])
 
 #take player input
-def player_input(board):
-    inp =  int(input(f"Please enter a number between 1 and 9: "))
-    if inp >= 1 and inp <= 9 and board[inp - 1] == "-":
-        board[inp - 1] = current_player
-    else:
-        print(f"This spot is already taken, please try another spot.")
-
+def player_input(player_name,board):
+    while True:
+        try:
+            turn = int(input(f"Player {player_name}, Please enter a number between 1 and 9: "))
+            if 1 <= turn <=9 and board[turn - 1] == "-":
+                if board[turn - 1] == "-":
+                    return turn
+                else:
+                    print(f"This spot is already taken, please try another spot.")
+            else:
+                print(f"Please enter a number between 1 and 9")
+        except ValueError:
+            print("Invalid input Please enter a number between 1 and 9!")
 #check for win or tie
 def check_horizontal(board):
     global winner
@@ -82,7 +90,7 @@ def switch_player():
 # computer player
 def computer(board):
     while current_player == "O":
-        position = random.randint(0, 8)
+        position = random.randint(0, 9)
         if board[position] == "-":
             board[position] = "O"
             switch_player()
