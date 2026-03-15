@@ -61,43 +61,28 @@ def check_diagonal(board):
 def check_tie(board):
     global game_running
     if "-" not in board:
-        print_board(board)
-        print("it's a tie!")
-        game_running = False
+        return True
+    return False
 
-def check_win():
+def check_win(board):
     global game_running
     if check_horizontal(board) or check_row(board) or check_diagonal(board):
-        print(f"The winner is {winner}")
-        game_running = False
-
-
-#switch the player
-def switch_player():
-    global current_player
-    if current_player == "X":
-        current_player = "O"
-    else:
-        current_player = "X"
-
-# computer player
-#def computer(board):
- #   while current_player == "O":
-  #      position = random.randint(0, 9)
-  #      if board[position] == "-":
-   #         board[position] = "O"
-    #        switch_player()
+        return True
+    return False
 
 
 def play_game():
     global game_running
-    while True:
-        play = input(f"Welcome to Tic-Tac-Toe, would you like to play? press y for yes or n for no: ")
-        if play.lower() == "n":
-            print("Thanks for playing!")
-            break
+    global board
+    board = ["-"] * 9
+    play = input(f"Welcome to Tic-Tac-Toe, would you like to play? press y for yes or n for no: ")
+    if play.lower() == "n":
+        print("Thanks for playing!")
+        return
 
-# Setup Players
+
+
+    #Setup Players
     player1_name = input("Player 1, pleas enter your name: ")
     is_computer = input("Do you want to play against (1) Human or (2) Computer? ")
     if is_computer == "2":
@@ -115,15 +100,15 @@ def play_game():
     if player1_symbol == "X":
             player2_symbol = "O"
     else:
-            player2_symbol = "X"
+        player2_symbol = "X"
 
 
     current_turn = player1_symbol
     names = {player1_symbol: player1_name, player2_symbol: player2_name}
-    while game_running:
+    while game_running == True:
         print_board(board)
 
-        if is_computer and names[current_turn] == "Computer":
+        if is_computer == "2" and names[current_turn] == "Computer":
             print("Computer is making a move...")
 
             available_spots = [i for i, spot in enumerate(board) if spot == "-"]
@@ -134,34 +119,36 @@ def play_game():
 
         board[move_index] = current_turn
 
-        # 4. Check Win/Tie
-        if check_horizontal(board) or check_row(board) or check_diagonal(board):
+
+        if check_win(board):
             print_board(board)
             print(f"The winner is {names[current_turn]}!")
             game_running = False
-        elif "-" not in board:
+
+        elif check_tie(board):
             print_board(board)
             print("It's a tie!")
             game_running = False
-        else:
-            # 5. Switch Player
-            current_turn = "O" if current_turn == "X" else "X"
 
-    # 6. Play Again?
-        if input("Would you like to play again? (y/n): ").lower() == "y":
-            board = ["-", "-", "-",
-                     "-", "-", "-",
-                     "-", "-", "-"]
-            game_running = True
-            play_game()
+        else:
+            if current_turn == "X":
+                current_turn = "O"
+            else:
+                current_turn = "X"
+
+
 
 if __name__ == '__main__':
-    board = ["-", "-", "-",
-             "-", "-", "-",
-             "-", "-", "-"]
-
-
-    turn = 0
     winner = " "
-    game_running = True
-    play_game()
+    while True:
+        board = ["-", "-", "-",
+                 "-", "-", "-",
+                 "-", "-", "-"]
+
+
+        game_running = True
+        play_game()
+        play_again = input("Game Over, would you like to play again? (y/n): ").lower()
+        if play_again.lower() == "n":
+            print("Thanks for playing! Final goodbye.")
+            break
