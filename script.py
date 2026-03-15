@@ -1,8 +1,5 @@
 import random
 
-
-
-#printing the game board
 def print_board(board):
     print(board[0] + " | " + board[1] + " | " + board[2])
     print("----------")
@@ -10,7 +7,6 @@ def print_board(board):
     print("----------")
     print(board[6] + " | " + board[7] + " | " + board[8])
 
-#take player input
 def player_input(player_name,board):
     while True:
         try:
@@ -24,7 +20,7 @@ def player_input(player_name,board):
                 print(f"Please enter a number between 1 and 9")
         except ValueError:
             print("Invalid input Please enter a number between 1 and 9!")
-#check for win or tie
+
 def check_horizontal(board):
     global winner
     if board[0] == board[1] == board[2] and board[1] != "-":
@@ -70,19 +66,17 @@ def check_win(board):
         return True
     return False
 
-
 def play_game():
     global game_running
     global board
-    board = ["-"] * 9
-    play = input(f"Welcome to Tic-Tac-Toe, would you like to play? press y for yes or n for no: ")
+    board = ["-", "-", "-",
+             "-", "-", "-",
+             "-", "-", "-"]
+    play = input(f"Welcome to Tic-Tac-Toe, to play press y for yes or n for no: ")
     if play.lower() == "n":
-        print("Thanks for playing!")
+        print("goodbye")
         return
 
-
-
-    #Setup Players
     player1_name = input("Player 1, pleas enter your name: ")
     is_computer = input("Do you want to play against (1) Human or (2) Computer? ")
     if is_computer == "2":
@@ -96,12 +90,10 @@ def play_game():
             print(f"Randomly assigned: {player1_symbol}")
     else:
             player1_symbol = choice
-
     if player1_symbol == "X":
             player2_symbol = "O"
     else:
         player2_symbol = "X"
-
 
     current_turn = player1_symbol
     names = {player1_symbol: player1_name, player2_symbol: player2_name}
@@ -119,7 +111,6 @@ def play_game():
 
         board[move_index] = current_turn
 
-
         if check_win(board):
             print_board(board)
             print(f"The winner is {names[current_turn]}!")
@@ -136,15 +127,12 @@ def play_game():
             else:
                 current_turn = "X"
 
-
-
 if __name__ == '__main__':
     winner = " "
     while True:
         board = ["-", "-", "-",
                  "-", "-", "-",
                  "-", "-", "-"]
-
 
         game_running = True
         play_game()
