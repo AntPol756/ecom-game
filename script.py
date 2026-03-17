@@ -83,7 +83,6 @@ def play_game():
         else:
             print("Invalid input! Please type y for yes or n for no.")
 
-
     player1_name = input("Player 1, pleas enter your name: ")
     while True:
         is_computer = input("If you want to play against a Human press 1 or if you want to play against a Computer press 2:")
@@ -101,12 +100,10 @@ def play_game():
         if choice == 'X' or choice == 'O':
             player1_symbol = choice
             break
-
         elif choice == "":
             player1_symbol = random.choice(["X", "O"])
             print(f"Randomly assigned: {player1_symbol}")
             break
-
         else:
             print("Invalid choice! Please type X or O or just press Enter.")
 
@@ -119,7 +116,6 @@ def play_game():
     names = {player1_symbol: player1_name, player2_symbol: player2_name}
     while game_running == True:
         print_board(board)
-
         if is_computer == "2" and names[current_turn] == "Computer":
             print("The computer is making a move pleas wait")
 
@@ -158,7 +154,12 @@ if __name__ == '__main__':
 
         game_running = True
         play_game()
-        play_again = input("Game Over, would you like to play again? (y/n): ").lower()
-        if play_again.lower() == "n":
-            print("Thanks for playing!  goodbye.")
-            break
+        while True:
+            play_again = input("Game Over, would you like to play again? press y for yes or n for no: ").lower()
+            if play_again.lower() == "n":
+                print("Thanks for playing! goodbye.")
+                exit()
+            elif play_again == "y":
+                break
+            else:
+                print("Invalid input! Please enter y to restart and play again or n to quit the game.")
