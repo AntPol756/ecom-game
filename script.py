@@ -17,9 +17,9 @@ def player_input(player_name,board):
                 else:
                     print(f"This spot is already taken, please try another spot.")
             else:
-                print(f"Please enter a number between 1 and 9")
+                print(f"Out of range! please enter a number between 1 and 9")
         except ValueError:
-            print("Invalid input Please enter a number between 1 and 9!")
+            print(f"Invalid input Please enter a number between 1 and 9!")
 
 def check_horizontal(board):
     global winner
@@ -72,24 +72,44 @@ def play_game():
     board = ["-", "-", "-",
              "-", "-", "-",
              "-", "-", "-"]
-    play = input(f"Welcome to Tic-Tac-Toe, to play press y for yes or n for no: ")
-    if play.lower() == "n":
-        print("goodbye")
-        return
+    while True:
+        play = input(f"Welcome to Tic-Tac-Toe, to play press y for yes or n for no: ").lower()
+        if play == "y":
+            break
+        elif play == "n":
+            print("Goodbye")
+            game_running = False
+            return
+        else:
+            print("Invalid input! Please type y for yes or n for no.")
+
 
     player1_name = input("Player 1, pleas enter your name: ")
-    is_computer = input("Do you want to play against (1) Human or (2) Computer? ")
-    if is_computer == "2":
-        player2_name = "Computer"
-    else:
-        player2_name = input("Player 2, pleas enter your name: ")
+    while True:
+        is_computer = input("If you want to play against a Human press 1 or if you want to play against a Computer press 2:")
+        if is_computer == "2":
+            player2_name = "Computer"
+            break
+        elif is_computer == "1":
+            player2_name = input("Player 2, pleas enter your name: ")
+            break
+        else:
+            print("Invalid choice! Please enter 1 for playing against another player or 2 for playing against a computer.")
 
-    choice = input(f"{player1_name}, pick a symbol (X/O) or press Enter for random: ").upper()
-    if choice != 'X' and choice != 'O':
+    while True:
+        choice = input(f"{player1_name}, pick a symbol X or O or press Enter for random: ").upper()
+        if choice == 'X' or choice == 'O':
+            player1_symbol = choice
+            break
+
+        elif choice == "":
             player1_symbol = random.choice(["X", "O"])
             print(f"Randomly assigned: {player1_symbol}")
-    else:
-            player1_symbol = choice
+            break
+
+        else:
+            print("Invalid choice! Please type X or O or just press Enter.")
+
     if player1_symbol == "X":
             player2_symbol = "O"
     else:
@@ -101,12 +121,14 @@ def play_game():
         print_board(board)
 
         if is_computer == "2" and names[current_turn] == "Computer":
-            print("Computer is making a move...")
+            print("The computer is making a move pleas wait")
 
-            available_spots = [i for i, spot in enumerate(board) if spot == "-"]
+            available_spots = []
+            for i in range(len(board)):
+                if board[i] == "-":
+                    available_spots.append(i)
             move_index = random.choice(available_spots)
         else:
-            # Human move
             move_index = player_input(names[current_turn], board) - 1
 
         board[move_index] = current_turn
@@ -138,5 +160,5 @@ if __name__ == '__main__':
         play_game()
         play_again = input("Game Over, would you like to play again? (y/n): ").lower()
         if play_again.lower() == "n":
-            print("Thanks for playing! Final goodbye.")
+            print("Thanks for playing!  goodbye.")
             break
